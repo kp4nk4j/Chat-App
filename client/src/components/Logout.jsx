@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { BiPowerOff } from "react-icons/bi";
+import { BiPowerOff, BiLeftArrow } from "react-icons/bi";
 import styled from "styled-components";
 import axios from "axios";
 import { logoutRoute } from "../utils/APIRoutes";
@@ -16,10 +16,19 @@ export default function Logout() {
       navigate("/login");
     }
   };
+  const handleBackClick = () => {
+    navigate('/login')
+  }
   return (
-    <Button onClick={handleClick}>
-      <BiPowerOff />
-    </Button>
+    <div style={{ display: 'flex', gap: '10px' }}>
+      <Button>
+        <BiLeftArrow onClick={handleBackClick} />
+      </Button>
+      <Button onClick={handleClick}>
+        <BiPowerOff />
+      </Button>
+    </div>
+
   );
 }
 

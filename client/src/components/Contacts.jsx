@@ -6,12 +6,20 @@ export default function Contacts({ contacts, changeChat }) {
   const [currentUserName, setCurrentUserName] = useState(undefined);
   const [currentUserImage, setCurrentUserImage] = useState(undefined);
   const [currentSelected, setCurrentSelected] = useState(undefined);
-  useEffect(async () => {
-    const data = await JSON.parse(
-      localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)
-    );
-    setCurrentUserName(data.username);
-    setCurrentUserImage(data.avatarImage);
+  useEffect(() => {
+    const storedData = localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY);
+
+    if (storedData) {
+      try {
+        const data = JSON.parse(storedData);
+        setCurrentUserName(data.username);
+        setCurrentUserImage(data.avatarImage);
+      } catch (error) {
+        console.error('Error parsing data from localStorage:', error);
+      }
+    } else {
+      console.log('No data found in localStorage for the given key.');
+    }
   }, []);
   const changeCurrentChat = (index, contact) => {
     setCurrentSelected(index);
@@ -30,9 +38,8 @@ export default function Contacts({ contacts, changeChat }) {
               return (
                 <div
                   key={contact._id}
-                  className={`contact ${
-                    index === currentSelected ? "selected" : ""
-                  }`}
+                  className={`contact ${index === currentSelected ? "selected" : ""
+                    }`}
                   onClick={() => changeCurrentChat(index, contact)}
                 >
                   <div className="avatar">
